@@ -1,14 +1,18 @@
 ﻿#pragma once
 #include <iostream>
+#include <stdexcept>
 using namespace std;
 
+
+template <class T>
 class Stack {
 private:
+
     struct Node {
-        char letter;
+        T element;
         Node* next;
 
-        Node(char ch) : letter(ch), next(nullptr) {}
+        Node(T ele) :element(ele), next(nullptr) {}
     };
 
     Node* top;
@@ -18,9 +22,12 @@ private:
         return top == nullptr;
     }
 
+
+
 public:
+
     // Constructor
-    Stack() : top(nullptr), length(0) {}
+    Stack() :top(nullptr), length(0) {}
 
     // Destructor
     ~Stack() {
@@ -30,21 +37,21 @@ public:
     }
 
     // Push
-    void push(char val) {
-        Node* newNode = new Node(val);
+    void push(T ele) {
+        Node* newNode = new Node(ele);
         newNode->next = top;
         top = newNode;
         length++;
     }
 
     // Pop
-    char pop() {
+    T pop() {
         if (_isEmpty()) {
-            return '\0'; // بدون طباعة
+            throw  runtime_error("Stack is empty");
         }
 
         Node* temp = top;
-        char value = temp->letter;
+        T value = temp->element;
 
         top = top->next;
         delete temp;
@@ -54,9 +61,9 @@ public:
     }
 
     // Top
-    char getTop() const {
-        if (_isEmpty()) return '\0';
-        return top->letter;
+    T getTop() const {
+        if (_isEmpty()) throw runtime_error("Stack is empty");
+        return top->element;
     }
 
     // isEmpty (public إذا احتجته)
@@ -69,15 +76,15 @@ public:
         return length;
     }
 
-    // Display (للتجربة فقط)
+    
     void display() const {
         Node* temp = top;
-        cout << "Top -> ";
+        cout << "[ ";
         while (temp != nullptr) {
-            cout << temp->letter;
+            cout << temp->element;
             if (temp->next) cout << " , ";
             temp = temp->next;
         }
-        cout << endl;
+        cout <<" ]" << endl;
     }
 };
